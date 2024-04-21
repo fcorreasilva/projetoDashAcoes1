@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
+import os
+import psycopg2
 
 app = Flask(__name__)
 
-# Configurações do banco de dados
-db = mysql.connector.connect(
-    host="localhost",
-    user="seu_usuario",
-    password="sua_senha",
-    database="nome_do_banco_de_dados"
-)
+# Obtenha as credenciais de conexão do ambiente
+DATABASE_URL = os.environ['postgres://vjqkijusfokyku:6ae5592a61d4da0a84f24098190a04a0c7f5b6a04f474a42b27e5a0e5b7be675@ec2-52-54-200-216.compute-1.amazonaws.com:5432/d9dlbkttuqamvs']
 
-cursor = db.cursor()
+# Conectando ao banco de dados
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+cursor = conn.cursor()
+
 
 # Rota para a página inicial
 @app.route("/")
@@ -29,7 +29,7 @@ def submit():
         sql = "INSERT INTO ativos (ticker, nome) VALUES (%s, %s)"
         val = (ticker, nome)
         cursor.execute(sql, val)
-        db.commit()
+        conn.commit()
 
         return redirect("/")
 
