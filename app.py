@@ -19,9 +19,9 @@ def index():
     return render_template("index.html")
 
 # Rota para submeter o formulário
-@app.route("/submit", methods=["POST"])
-def submit():
-    if request.method == "POST":
+    @app.route("/submit", methods=["GET", "POST"])
+    def submit():
+     if request.method == "POST":
         ticker = request.form["ticker"]
         nome = request.form["nome"]
 
@@ -32,6 +32,10 @@ def submit():
         conn.commit()
 
         return redirect("/")
+
+    # Caso a solicitação não seja POST, você pode lidar com isso aqui se necessário
+    return "Method Not Allowed", 405
+
 
 if __name__ == "__main__":
     app.run(debug=True)
