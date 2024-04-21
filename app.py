@@ -19,7 +19,7 @@ def index():
     return render_template("index.html")
 
 # Rota para submeter o formulário
-    @app.route("/submit", methods=["GET", "POST"])
+    @app.route("/submit", methods=["POST"])
     def submit():
      if request.method == "POST":
         ticker = request.form["ticker"]
